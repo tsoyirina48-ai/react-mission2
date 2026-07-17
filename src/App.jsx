@@ -1,5 +1,7 @@
-
-import { useState } from "react";
+import CategoryFilter from "./components/CategoryFilter";
+import SearchForm from "./components/SearchForm";
+import StudySummary from "./components/StudySummary";
+import { useState, useMemo, useRef, useCallback, useEffect } from "react";
 import StudyList from "./components/StudyList";
 import StudyInfo from "./components/StudyInfo";
 import './App.css';
@@ -9,6 +11,13 @@ console.log(reactData);
 
 function App() {
 
+  const previousKeywordRef = useRef("");
+  const renderCount = useRef(0);
+  const searchInputRef = useRef(null);
+ const [favoriteIds, setFavoriteIds] = useState([]);
+const [favoriteOnly, setFavoriteOnly] = useState(false); 
+
+const [level, setLevel] = useState("all");
 const [category, setCategory] = useState("all");
 const [keyword,setKeyword] = useState("");
 const [selectedId, setSelectedId] = useState(null);
@@ -16,54 +25,107 @@ const handleSelect = (id) => {
   setSelectedId(id);
 
 };
+useEffect(() => {
+  previousKeywordRef.current = keyword;
+}, [keyword]);
+
+const handleToggleFavorite = useCallback((id) => {
+  setFavoriteIds((prev) => prev.includes(id) ? prev.filter((itemId) => 
+  itemId !== id) : [...prev, id]
+);
+}, []);
  
-  const filteredData = reactData.filter((item) => {
+  const filteredData = useMemo(() => {
+
+    return reactData.filter((item) => { 
   const categoryMatch = category === "all" ||
    item.category === category;
     const keywordMatch = item.title
     .toLowerCase()
     .includes(
       keyword.toLowerCase());
-      return categoryMatch && keywordMatch;
-});
+      
+      const favoriteMatch = !favoriteOnly || favoriteIds.includes(item.id);
+       const levelMatch = level === "all" || item.level === level;
 
+    return (
+    categoryMatch && 
+    keywordMatch && 
+    favoriteMatch &&
+    levelMatch
+    );
+ });
+}, [keyword, category, favoriteOnly, favoriteIds, level]);
 
+    const summary = useMemo(() => {
+      return {
+        total: reactData.length,
+        visible: filteredData.length,
+        favorite: favoriteIds.length,
+      };
+    }, [filteredData, favoriteIds]);
 
-
+    const handleFocusSearch = () => {
+      searchInputRef.current?.focus();
+    };
+    useEffect(() => {
+      searchInputRef.current?.focus();
+    }, []);
+    renderCount.current += 1;
+    const handleReset = () => {
+      setKeyword("");
+      setCategory("all");
+      setFavoriteOnly(false);
+      setLevel("all");
+      previousKeywordRef.current = "";
+      searchInputRef.current?.focus();
+    };
+   
  return (
   <>
-  <h1>React Basic Review Mission2</h1>
-  <p>전체 학습 항목 수:{reactData.length}개</p>
-  <h2>첫 번째 데이터 출력</h2>
-  <h2>카테고리 필터</h2>
+  <p className="mission-title">React Basic Review Mission8</p>
+  <h1>React Hooks 학습 목록 관리</h1>
+  <p>useState, useMemo, useCallback, useRef를 활용한 복습 미션입니다.</p>
+      
+    <SearchForm
+      keyword={keyword}
+      setKeyword={setKeyword}
+      searchInputRef={searchInputRef}
+      previousKeywordRef={previousKeywordRef}
+      onFocusSearch={handleFocusSearch}
+      onReset={handleReset}
+      />
   
-
-  <div className="filter-buttons">
-   <button onClick={() => setCategory("all")}>전체</button>
-   <button onClick={() => setCategory("concept")}>concept</button>
-   <button onClick={() => setCategory("library")}>library</button>
-   <button onClick={() => setCategory("hook")}>hook</button>
+    <CategoryFilter
+       category={category}
+       setCategory={setCategory}
+       level={level}
+       setLevel={setLevel}
+       />
+  
+   <div className="favorite-filter">
+   <button onClick={() => setFavoriteOnly((prev) => !prev)}>
+    {favoriteOnly ? "전체 항목 보기" : "즐겨찾기만 보기"}
+   </button>
   </div>
-
-  <h2>검색</h2>
-  <input 
-  type="text"
-   placeholder="제목 검색"
-   value={keyword} 
-   onChange={(e) => setKeyword(e.target.value)}
+   
+   <StudySummary summary={summary}
+   renderCount={renderCount.current}
    />
 
-  <StudyInfo
-     title={reactData[0].title}
-     desc={reactData[0].desc}
-     category={reactData[0].category}
-     />
      <h2>학습 목록</h2>
+     {filteredData.length === 0 && (
+      <p className="empty-message">조건에 맞는 학습 항목이 없습니다.</p>
+     )}
+     {filteredData.length > 0 && ( 
      <StudyList 
      items={filteredData}
      selectedId={selectedId}
      onSelect={handleSelect}
+     favoriteIds={favoriteIds}
+     onToggleFavorite={handleToggleFavorite}
       />
+      )}
   </>
  );
 }

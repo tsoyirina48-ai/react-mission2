@@ -6,12 +6,42 @@
   text-align: center;
 
 }
+.mission-title {
+  color: #4f5fc7;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+}
+h2 {
+ text-align: left;
+}
 .active {
   border: 2px solid #646cff;
   background-color: #f0f2ff;
   border-radius: 8px;
   padding: 16px;
   margin-bottom: 20px;
+}
+.search-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+.search-area input {
+  flex: 1;
+  min-width: 0;
+  height: 48px;
+  padding: 0 14px;
+  box-sizing: border-box;
+}
+.search-area button {
+  width: auto;
+  min-width: 110px;
+  height: 48px;
+  padding: 0 16px;
+  border-radius: 10px;
+  white-space: nowrap;
 }
 
 button {
@@ -26,15 +56,45 @@ button {
   
 }
 .filter-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
   text-align: left;
   margin: 20px 0;
 }
+.filter-buttons button {
+  min-width: 90px;
+  height: 50px;
+  padding: 0 20px;
+
+  border: 1px solid #c7cbd6;
+  border-radius: 10px;
+  background: #fff;
+  color: #222;
+
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.filter-buttons button:hover {
+  background: #eef0ff;
+}
 .card {
-  border: 1px solid #d9d9d9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+
+  width: 100%;
+  list-style: none;
+  box-sizing: border-box;
+  text-align: left;
+
+  border: 1px solid #ddd;
   background: #ffffff;
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 20px;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 16px;
 }
 
 input {
@@ -42,4 +102,112 @@ input {
   max-width: 900px;
   padding: 10px;
   box-sizing: border-box;
+  border-radius: 10px;
+}
+
+.card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.card button {
+  min-width: 130px;
+  height: 48px;
+  padding: 0 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #b8b8b8;
+  border-radius: 10px;
+  background: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.card-content h3 {
+  margin: 0 0 12px;
+}
+.card-content p {
+  margin: 4px 0;
+}
+.item-meta {
+  color: #666;
+}
+.card button:hover {
+  background: #f3f3f3;
+}
+.card.active {
+  border: 2px splid #646cff;
+  background-color: #f0f2ff;
+}
+.study-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+
+  width: 100%;
+  margin: 24px 0;
+  padding: 20px 30px;
+   
+  background: #f5f6f8;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.study-summary p {
+  margin: 0;
+  flex: 1;
+  text-align: center;
+}
+.favorite-filter {
+  margin-top: 20px;
+  text-align: left;
+}
+.favorite-filter button {
+  min-width: 160px;
+  height: 54px;
+  padding: 0 22px;
+
+  border: none;
+  border-radius: 10px;
+  background: #3f51c7;
+  color: white;
+
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.favorite-filter button:hover {
+  background: #3445b5;
+}
+.keyword-info {
+  display: flex;
+  gap:40px;
+}
+.keyword-info p {
+  margin: 12px 0;
+}
+.level-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.level-buttons button {
+  width: auto;
+  min-width: 110px;
+  padding: 0 16px;
+  border-radius: 10px;
+} 
+.level-buttons button:hover {
+  background: #f0f2ff;
+  border-color: #646cff;
+}
+.empty-message {
+  padding: 30px;
+  text-align: center;
+  color: #666;
+  border: 1px solid #ddd;
+  border-radius: 10px;
 }
